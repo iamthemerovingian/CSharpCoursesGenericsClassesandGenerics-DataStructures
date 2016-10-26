@@ -1,8 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DataStructures
 {
-    public class CircularBuffer<T>
+    public interface IBuffer<T>
+    {
+        bool IsEmpty { get; }
+        void Write(T value);
+        T Read(); 
+    }
+
+    public class Buffer<T> : IBuffer<T>
+    {
+        Queue<T> _queue = new Queue<T>();
+        public bool IsEmpty
+        {
+            get
+            {
+                return _queue.Count == 0; ;
+            }
+        }
+
+        public T Read()
+        {
+            return _queue.Dequeue();
+        }
+
+        public void Write(T value)
+        {
+            _queue.Enqueue(value);
+        }
+    }
+    public class CircularBuffer<T> : IBuffer<T>
     {
         private T[] _buffer;
         private int _start;
